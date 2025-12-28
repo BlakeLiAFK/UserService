@@ -15,12 +15,15 @@ var local *Node
 func init() {
     nodeId := 1
     if str := os.Getenv("NodeId"); str != "" {
-        nodeId, _ = strconv.Atoi(str)
-        if nodeId <= 0 {
-            nodeId = 1
+        if id, err := strconv.Atoi(str); err == nil && id > 0 {
+            nodeId = id
         }
     }
-    local, _ = NewNode(nodeId)
+    var err error
+    local, err = NewNode(nodeId)
+    if err != nil {
+        panic("failed to initialize ID generator: " + err.Error())
+    }
 }
 
 func GenerateId() string {

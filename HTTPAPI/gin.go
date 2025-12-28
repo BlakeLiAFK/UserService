@@ -1,9 +1,9 @@
 package HTTPAPI
 
 import (
+    "UserService/HTTPAPI/UserAPI"
+    "UserService/HTTPAPI/auth"
     "UserService/config"
-    "UserService/httpd/UserAPI"
-    "UserService/httpd/auth"
     "UserService/logger"
     "UserService/models"
     "UserService/utils"
@@ -41,8 +41,10 @@ func InitGinAPI(r *gin.Engine) {
     api.GET("/user/refresh_token", authFunc, UserAPI.HandleUserRefreshToken(onGenerateJWTToken))
 
     if config.UseEmailVerify {
-        api.POST("/user/alloc_email_verify_code", UserAPI.HandleAllocEmailVerifyCode(func(token string) error {
-            // TODO 执行发送文件逻辑
+        api.POST("/user/alloc_email_verify_code", UserAPI.HandleAllocEmailVerifyCode(func(email, code string) error {
+            // TODO: 执行发送邮件逻辑
+            // 示例: sendEmail(email, "验证码: " + code)
+            logger.Println("需要发送验证码到邮箱:", email)
             return nil
         }))
     }
